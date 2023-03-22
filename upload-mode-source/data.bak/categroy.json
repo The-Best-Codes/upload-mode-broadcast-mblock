@@ -1,0 +1,18 @@
+[
+    {
+        "eid": "4384",
+        "identify": "cate_d9ae47fa",
+        "name": "Upload Mode Broadcast",
+        "menuIconURI": "",
+        "blockIcon": {
+            "name": "上传模式广播V2.0.svg",
+            "url": "http://mblock-expanded.oss-cn-shenzhen.aliyuncs.com/2fd59a2aa3514c44b57327a22f5ac44f.svg"
+        },
+        "colors": "#6886c4",
+        "sort": 999,
+        "create_time": 1582385364,
+        "modify_time": 1583898226,
+        "id": "7543",
+        "uid": 1090663
+    }
+]

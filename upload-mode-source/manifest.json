@@ -1,0 +1,73 @@
+{
+    "id": "arduino_broadcast",
+    "iconURL": "arduino_broadcast/imgs/14060d7d1d8f4ca1822bbc2223388071.png",
+    "coverURL": "./res/14060d7d1d8f4ca1822bbc2223388071.png",
+    "name": {
+        "zh": "Upload Mode",
+        "en": "Upload Mode Broadcast",
+        "de": "Upload Mode",
+        "es": "Upload Mode",
+        "fr": "Upload Mode",
+        "id": "Upload Mode",
+        "ja": "Upload Mode",
+        "ja-jph": "Upload Mode",
+        "ko": "Upload Mode",
+        "pl": "Upload Mode",
+        "uk": "Upload Mode",
+        "zh-hant": "Upload Mode",
+        "nl": "Upload Mode",
+        "it": "Upload Mode",
+        "hr": "Upload Mode",
+        "ru": "Upload Mode",
+        "pt": "Upload Mode",
+        "fi": "Upload Mode",
+        "tr": "Upload Mode",
+        "tk": "Upload Mode"
+    },
+    "description": {
+        "zh": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "en": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "de": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "es": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "fr": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "id": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "ja": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "ja-jph": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "ko": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "pl": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "uk": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "zh-hant": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "nl": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "it": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "hr": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "ru": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "pt": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "fi": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "tr": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "tk": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode."
+    },
+    "targets": [
+        "mcore",
+        "auriga",
+        "arduino_uno",
+        "arduino_mega2560"
+    ],
+    "main": "arduino_broadcast/index.js",
+    "codeTypes": [
+        "arduinoc"
+    ],
+    "device": false,
+    "sortId": 999,
+    "version": "0.0.9",
+    "extApiVersion": [
+        "1.0.1"
+    ],
+    "platform": [
+        "mblockpc",
+        "mblockweb"
+    ],
+    "homepage": "http://www.mblock.cc/api-docs/_preview/mblock-5/zh/use-extensions/use-extensions.html",
+    "feature": [
+        "worker"
+    ]
+}

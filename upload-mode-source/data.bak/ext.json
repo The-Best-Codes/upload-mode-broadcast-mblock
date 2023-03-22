@@ -1,0 +1,89 @@
+{
+    "device": false,
+    "identify": "arduino_broadcast",
+    "version": "0.0.9",
+    "name": "Upload Mode",
+    "description": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+    "cover": {
+        "name": "mblockPC-上传模式广播V1.1.png",
+        "url": "http://mblock-expanded.oss-cn-shenzhen.aliyuncs.com/14060d7d1d8f4ca1822bbc2223388071.png"
+    },
+    "targets": [
+        "mcore",
+        "auriga",
+        "arduino_uno",
+        "arduino_mega2560"
+    ],
+    "extApiVersion": [
+        "1.0.1"
+    ],
+    "sort": 999,
+    "codeTypes": [
+        "arduinoc"
+    ],
+    "generator": {
+        "arduinoc": {
+            "template": "//( include //)\n\n//( lib //)\n\n//({\n    this.$ALL_VARIABLES.length==0?'':this.$ALL_VARIABLES.map(v=>\"float \"+v+\" = 0;\").join('\\\\n')\n}//)\n\n//( declare //)\n\nvoid _delay(float seconds) {\n  long endTime = millis() + seconds * 1000;\n  while(millis() < endTime) _loop();\n}\n\n//(\nvoid setup() {\n  //( setup //)\n  //( code //)\n}\n//)\n\nvoid _loop() {\n  //( _loop //)\n}\n\nvoid loop() {\n  //( loop //)\n  _loop();\n}",
+            "generator": "({\n  lang: 'arduinoc',\n  template: `<%=template%>`,\n  splitor: {\n    frame: {\n      left: \"//(\",\n      right: \"//)\",\n    },\n    expression: {\n      left: \"/*{\",\n      right: \"}*/\",\n    }\n  },\n  reducers: [\n    {\n      name: 'include',\n      reduce: (codes) => {\n        let codes1 = []\n        for (let code of codes) {\n          let codeStr = '';\n          if (typeof code === 'string') {\n            codeStr = code;\n          } else if (typeof code === 'function') {\n            codeStr = code();\n          }\n          if (codes1.indexOf(codeStr) === -1) {\n            codes1.push(codeStr);\n          }\n        }\n        if (codes1.length === 0) {\n          return undefined;\n        }\n        return codes1.map(code => {\n          return '#include ' + code;\n        }).join('\\n') + '\\n'\n      }\n    }\n  ]\n})",
+            "snippets": "{}",
+            "sources": [
+                {
+                    "name": "src/OfflineBroadcast.cpp",
+                    "url": "src/OfflineBroadcast.cpp",
+                    "fileData": "#include \"OfflineBroadcast.h\"\nunsigned char prevc;\nbyte index = 0;\nbyte dataLen;\nbool isAvailable,isStart;\nuint8_t command_index = 0;\nchar serialRead;\nchar buffer[52];\n#define MAX_LISTENER 10\n\nstruct Listener\n{\n    String msg;\n    void (*callback)(void);\n};\nstruct Listener listenList[20];\nint listenerP=0;\nOfflineBroadcast::OfflineBroadcast(void)\n{}\nvoid OfflineBroadcast::readSerial(){\n  isAvailable = false;\n  if(Serial.available()>0){\n    isAvailable = true;\n    serialRead = Serial.read();\n  }\n}\nunsigned char OfflineBroadcast::readBuffer(int index){\n return buffer[index]; \n}\nvoid OfflineBroadcast::loop()\n{\n\treadSerial();\n  if(isAvailable){\n\tunsigned char c = serialRead&0xff;\n\tif(c==0x55&&isStart==false){\n\t if(prevc==0xff){\n\t  index=1;\n\t  isStart = true;\n\t }\n\t}else{\n\t  prevc = c;\n\t  if(isStart){\n\t\tif(index==2){\n\t\t dataLen = c; \n\t\t}else if(index>2){\n\t\t  dataLen--;\n\t\t}\n\t\twriteBuffer(index,c);\n\t  }\n\t}\n\t index++;\n\t if(index>51){\n\t  index=0; \n\t  isStart=false;\n\t }\n\t if(isStart&&dataLen==0&&index>3){ \n\t\tisStart = false;\n\t\tparseData(); \n\t\tindex=0;\n\t }\n  }\n}\nvoid OfflineBroadcast::broadcast( String msg){\n  uint8_t arr[50]={0,0,1,0x46,1,1};\n  int len = msg.length();\n  int size = 6;\n  if(len==0){\n    return;\n  }\n  arr[5] = len;\n\tfor(int i=0;i<len;i++){\n    \tarr[size] = uint8_t(msg[i]);\n    \tsize++;\n  }\n  arr[0] = size-1;\n  writeHead();\n  for(int i=0;i<size;i++)\n  {\n    writeSerial(arr[i]);\n  }\n  writeEnd();\n  delay(100);\n}\nvoid OfflineBroadcast::broadcast(String msg,String value){\n  uint8_t arr[50]={0,0,1,0x46,2,1};\n  int len = msg.length();\n  if(len==0){\n    return;\n  }\n  int len2 = value.length();\n  int size = 6;\n  arr[5] = len;\n  for(int i=0;i<len;i++){\n      arr[size] = uint8_t(msg[i]);\n      size++;\n  }\n  arr[size++] = len2;\n  for(int i=0;i<len2;i++){\n      arr[size++] = uint8_t(value[i]);\n  }\n  arr[0] = size-1;\n  writeHead();\n  for(int i=0;i<size;i++)\n  {\n    writeSerial(arr[i]);\n  }\n  writeEnd();\n  delay(100);\n}\n\nvoid OfflineBroadcast::readSensor(int device){\n   /**************************************************\n      ff    55      len idx action device type len name  \n      0     1       2   3   4      5      6    7    8\n      0xff  0x55   0x4 0x3 0x1    0x46    0x1  0x2  48 69\n      -----------------------------------------------\n      ff    55      len idx action device type len name len message\n      0   1   2 3 4   5   6 7 8 9 10\n  ***************************************************/\n  int type;\n  switch(device){\n    case  BROADCAST:{\n      type = readBuffer(6);\n      // 无附加值\n      if(type==1){\n        int len = readBuffer(7);\n        broadcastMsg = readString(8,len); \n        broadcastValue = \"\";\n      }\n      // 有附加值\n      else if(type==2){\n        int nlen = readBuffer(7);\n        broadcastMsg = readString(8,nlen);\n        int vlen = readBuffer(7+nlen+1);\n        broadcastValue = readString(7+nlen+2,vlen);\n      }\n      bool hasCallback = false;\n      for(int i=0;i<MAX_LISTENER;i++){\n        if(broadcastMsg.equals(listenList[i].msg)){\n          listenList[i].callback();\n          hasCallback = true;\n        }\n      } \n      if(!hasCallback){\n        callOK();\n      }\n    }\n    break;\n  }\n}\nvoid OfflineBroadcast::parseData(){\n  isStart = false;\n  int idx = readBuffer(3);\n  command_index = (uint8_t)idx;\n  int action = readBuffer(4);\n  int device = readBuffer(5);\n  switch(action){\n    case GET:{\n        readSensor(device);\n     }\n     break;\n  }\n}\n\nvoid OfflineBroadcast::writeBuffer(int index,unsigned char c){\n  buffer[index]=c;\n}\nvoid OfflineBroadcast::writeHead(){\n  writeSerial(0xff);\n  writeSerial(0x55);\n}\nvoid OfflineBroadcast::writeEnd(){\n Serial.println(); \n}\nvoid OfflineBroadcast::writeSerial(unsigned char c){\n Serial.write(c);\n}\nchar _receiveStr[20] = {};\nuint8_t _receiveUint8[16] = {};\nString OfflineBroadcast::readString(int idx,int len){\n  char p[50];\n  for(int i=0;i<len;i++){\n    p[i]=readBuffer(idx+i);\n  }\n  p[len] = '\\0';\n  return String(p);\n}\nvoid OfflineBroadcast::callOK(){\n    uint8_t arr[5]={4,0,1,0x46,3};\n    writeHead();\n    for(int i=0;i<5;i++)\n    {\n      writeSerial(arr[i]);\n    }\n    writeEnd();\n}\nvoid OfflineBroadcast::on(String msg,void(*callback)(void)){\n  struct Listener listener;\n  listener.msg = msg;\n  listener.callback = callback;\n  if(listenerP<MAX_LISTENER){\n    listenList[listenerP++] = listener;\n  }\n}\r\n"
+                },
+                {
+                    "name": "src/OfflineBroadcast.h",
+                    "url": "src/OfflineBroadcast.h",
+                    "fileData": "#ifndef OfflineBoardcast_H\n#define OfflineBoardcast_H\n#include \"MeSerial.h\"\n#include <Arduino.h>\n\n#define BROADCAST 70\n#define GET 1\n\nclass OfflineBroadcast\n{\npublic:\n\tOfflineBroadcast(void);\n\tvoid loop();\n\tString broadcastMsg = \"\";\n\tString broadcastValue = \"\";\n\tvoid broadcast(String msg,String value);\n  void broadcast(String msg);\n  void callOK();\n  void on(String msg,void(*callback)(void));\nprivate:\n  void readSensor(int device);\n  unsigned char readBuffer(int index);\n  void writeBuffer(int index,unsigned char c);\n  void parseData();\n  void writeEnd();\n  void writeSerial(unsigned char c);\n  void readSerial();\n  String readString(int idx,int len);\n  void writeHead();\n};\n#endif\r\n"
+                }
+            ]
+        }
+    },
+    "main": "",
+    "sourceFiles": "",
+    "code": "var currDevice;\nvar engine;\nvar appContext;\nvar cacheBuffer = [];\nvar broadcastMap = {};\nvar listeners = [];\nvar currBroadcast;\nlet appCancelSubscribe; // 取消订阅\n\nfunction broadcast(message, value) {\n    var protocol = [0xff, 0x55, 0, 0, 1, 70, 1, 0];\n\n    var size = 8;\n    var msgLen = message.length;\n    protocol[7] = msgLen;\n    for (var i = 0; i < msgLen; i++) {\n        protocol[size] = message[i].charCodeAt(0);\n        size++;\n    }\n    if (value != null) {\n        protocol[6] = 2;\n        var valueLen = String(value).length;\n        protocol[size++] = valueLen;\n        for (i = 0; i < valueLen; i++) {\n            protocol[size++] = String(value)[i].charCodeAt(0);\n        }\n    }\n    protocol[2] = size - 3;\n    if (engine) {\n        engine.writeRaw(Uint8Array.from(protocol));\n    }\n\n}\n\nfunction subscribeMessage(app) {\n    appContext = app;\n    if (!appCancelSubscribe) {\n        appCancelSubscribe = appContext.subscribeMessage(\"sprite2robotBroadcast\", function (data) {\n            broadcast(data.msg, data.value);\n        });\n    }\n}\n\nfunction unsubscribeMessage() {\n    appCancelSubscribe && appCancelSubscribe();\n    appCancelSubscribe = null;\n}\n\nfunction readRaw(buffer) {\n    var datas = doParse(buffer);\n    if (!datas) return;\n    datas.forEach(function (data) {\n        if (data[0] == data.length - 1) {\n            if (data[3] === 70) {\n                let resultData = parseBroadcast(data);\n                appContext.sendMessage(\"robot2spriteBroadcast\", resultData);\n\n            }\n        }\n    });\n}\n\nfunction parseBroadcast(data) {\n    if (data[4] == 1) {\n        var len1 = data[5];\n        var msgArr = data.slice(6, 6 + len1);\n        var msg = '';\n        msgArr.map(function (item) {\n            msg += String.fromCharCode(item);\n        });\n        broadcastMap[msg] = \"\";\n    } else if (data[4] == 2) {\n        var len1 = data[5];\n        var msgArr = data.slice(6, 6 + len1);\n        var msg = '';\n        msgArr.map(function (item) {\n            msg += String.fromCharCode(item);\n        });\n        var len2 = data[6 + len1];\n        var valueArr = data.slice(6 + len1 + 1, 6 + len1 + 1 + len2);\n        var value = '';\n        valueArr.map(function (item) {\n            value += String.fromCharCode(item);\n        });\n        broadcastMap[msg] = value;\n    } else if (data[4] == 3) {\n        return { type: 'cmd', msg: 'threadFinish' };\n    }\n    return { msg, value: value || \"\" };\n}\n\nfunction doParse(buffData) {\n    var data = arrayFromArrayBuffer(buffData);\n    var totalData = cacheBuffer = cacheBuffer.concat(data);\n\n    var index = findIndexOfStart(totalData);\n    if (index !== -1) {\n        cacheBuffer = totalData.slice(index);\n    } else {\n        return undefined;\n    }\n    return getContentFromCacheBuffer();\n}\n\nfunction arrayFromArrayBuffer(buffer) {\n    var dataView = new Uint8Array(buffer);\n    var result = [];\n    for (var i = 0; i < dataView.length; i++) {\n        result.push(dataView[i]);\n    }\n    return result;\n}\n\nfunction getContentFromCacheBuffer() {\n    var contents = [];\n    while (cacheBuffer.length >= 4) {\n        var headerIndex = findIndexOfStart(cacheBuffer);\n        var footerIndex = findIndexOfEnd(cacheBuffer);\n        if (headerIndex === -1 || footerIndex === -1 || footerIndex < headerIndex) break;\n        var content = cacheBuffer.slice(headerIndex + 2, footerIndex);\n        if (content.length >= REC_BUF_MAX_LENGTH) {\n            console.warn(\"receive buffer overflow!\");\n        }\n        contents.push(content);\n        cacheBuffer = cacheBuffer.slice(footerIndex + 2);\n    }\n    return contents.length > 0 ? contents : null;\n}\n\nvar REC_BUF_MAX_LENGTH = 36;\nvar BUF_START_FLAG = [0xff, 0x55];\nvar BUF_END_FLAG = [0x0d, 0x0a];\n\nfunction checkStart(flag1, flag2) {\n    return flag1 === BUF_START_FLAG[0] && flag2 === BUF_START_FLAG[1];\n}\n\nfunction checkEnd(flag1, flag2) {\n    return flag1 === BUF_END_FLAG[0] && flag2 === BUF_END_FLAG[1];\n}\n\nfunction findIndexOfStart(data) {\n    if (Array.isArray(data)) {\n        return data.findIndex(function (num, index) {\n            return checkStart(num, data[index + 1]);\n        });\n    }\n    return -1;\n}\n\nfunction findIndexOfEnd(data) {\n    if (Array.isArray(data)) {\n        return data.findIndex(function (num, index) {\n            return checkEnd(num, data[index + 1]);\n        });\n    }\n    return -1;\n}",
+    "handler": "const ExtHandler = {\n\n    // 当扩展加载\n    async onLoad(app, target) {\n        const account = app.getService('account');\n        if (account) {\n            const isLogin = await account.isLogin();\n            if (!isLogin) {\n                app.workspace.disableBlocks(...mustLoginBlocks);\n            }\n            account.onLogin(() => {\n                app.workspace.enableBlocks(...mustLoginBlocks);\n            });\n            account.onLogout(() => {\n                app.workspace.disableBlocks(...mustLoginBlocks);\n            });\n        }\n        if (target && typeof target.isUploadMode === 'function') {\n            triggerBlocksStatus(target.isUploadMode() ? 'upload' : 'debug', app);\n        }\n        subscribeMessage(app);\n        if (target.tar.name) {\n            currDevice = target.tar.name\n        } else if (target.tar.sprite) {\n            currDevice = target.tar.sprite.name;\n        }\n    },\n\n    // 当扩展卸载\n    onUnload(app, target) {\n        // TODO\n        unsubscribeMessage();\n    },\n\n    // 当设备连接\n    onConnect(app, device) {\n        // TODO\n    },\n\n    // 当�������������备断连\n    onDisconnect(app, device) {\n        // TODO\n    },\n\n    // 当点击停止按钮\n    onStopAll(app, device) {\n    },\n\n    // 当准备切换到上传模式\n    async beforeChangeUploadMode(app, device) {\n        return true;\n    },\n\n    // 当准备切换到调试模式\n    async beforeChangeDebugMode(app, device) {\n        return true;\n    },\n\n    // 当已切换到上传模式\n    afterChangeUploadMode(app, device) {\n        triggerBlocksStatus('upload', app, device);\n        return true;\n    },\n\n    // 当已切换到调试模式\n    afterChangeDebugMode(app, device) {\n        triggerBlocksStatus('debug', app, device);\n        return true;\n    },\n\n    // 当选中设备\n    onSelect(app, device) {\n        engine = device;\n        setTimeout(() => {\n            triggerBlocksStatus(device.isUploadMode() ? 'upload' : 'debug', app, device);\n        }, 0);\n        if (device.tar.sprite) {\n            currDevice = device.tar.sprite.name;\n        }\n    },\n\n    // 当离开设备\n    onUnselect(app, device) {\n        triggerBlocksStatus('', app, device);\n    },\n\n    // 当上传代码\n    beforeCodeUpload(app, device) {\n        // TODO\n    },\n\n    // 当上传代码结束\n    afterCodeUpload(app, device) {\n        // TODO\n    },\n\n    // 当收到字节流\n    onRead(app, device) {\n        engine = device;\n        readRaw(device.readRaw(true));\n    }\n}",
+    "impl": "class ExtImpl {\n  constructor() {\n    // TODO\n  }\n}",
+    "options": {
+        "mcore": {
+            "middlewares": [
+                {
+                    "name": "arduino",
+                    "isCustom": false
+                }
+            ]
+        },
+        "auriga": {
+            "middlewares": [
+                {
+                    "name": "arduino",
+                    "isCustom": false
+                }
+            ]
+        },
+        "arduino_uno": {
+            "middlewares": [
+                {
+                    "name": "arduino",
+                    "isCustom": false
+                }
+            ]
+        },
+        "arduino_mega2560": {
+            "middlewares": [
+                {
+                    "name": "arduino",
+                    "isCustom": false
+                }
+            ]
+        }
+    },
+    "originVersion": "0.0.9",
+    "platform": [
+        "mblockpc",
+        "mblockweb"
+    ],
+    "homepage": "http://www.mblock.cc/api-docs/_preview/mblock-5/zh/use-extensions/use-extensions.html",
+    "id": "4384"
+}
