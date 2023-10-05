@@ -13,7 +13,7 @@ mBlock is a STEAM educational software that uses Scratch 3.0 and Arduino code to
 
 If you want to add the mBlock extension "Upload mode broadcast" to your device on mBlock, the best option for you is to download the .mext file <a href="https://github.com/The-Best-Codes/upload-mode-broadcast-mblock/raw/main/arduino_broadcast.mext">here</a> (https://github.com/The-Best-Codes/upload-mode-broadcast-mblock/raw/main/arduino_broadcast.mext), or in the "upload-mode-broadcast-mblock" repository (above). Then, open the <a href="https://ext.mblock.cc/">mBlock extension builder</a> (https://ext.mblock.cc/). In the sidepanel, click "My Plugin" to expand the plugin menu, then "My Extension" to access you extesnions.
 
->![image](https://user-images.githubusercontent.com/106822363/227027690-0386a26e-f436-42d6-ae0c-ab06ad35953d.png)
+> ![image](https://user-images.githubusercontent.com/106822363/227027690-0386a26e-f436-42d6-ae0c-ab06ad35953d.png)
 
 Next, click "Import Data" and upload the file you downloaded:
 
@@ -27,6 +27,11 @@ After the extension is uploaded, you can edit it to your needs. To add it to you
 >![image](https://user-images.githubusercontent.com/106822363/227029326-576d4493-638d-4711-b44e-022d9b2f6d3e.png)
 
 >![image](https://user-images.githubusercontent.com/106822363/227029098-7db15226-b62e-4b3d-a46b-7e5bc51d06dc.png)
+
+<h1>Now, change the extension ID to avoid conflict:</h1>
+Go to the basic information tab and change the ID to something new and unique:
+
+>![image](https://github.com/The-Best-Codes/upload-mode-broadcast-mblock/assets/106822363/ea9714f5-6889-4e6f-ae38-74a32dbd0cbb)
 
 
 Save your changes and submit your extension for review. That's it!
