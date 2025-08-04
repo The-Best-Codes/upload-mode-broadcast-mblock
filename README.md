@@ -1,15 +1,17 @@
 # upload-mode-broadcast-mblock
 The extension "Upload mode broadcast" on mBlock (https://ide.mblock.cc/) source code and download file.
 
-<h2>⚠️This is for mBlock. If you don't know what mBlock is, you probably won't find this useful.</h2>
-If you are interested in mBlock, you can follow the link below or read the "About mBlock" section of this file:
+> [!NOTE]
+> This is for mBlock. If you don't know what mBlock is, you probably won't find this useful.
+> If you are interested in mBlock, you can follow the link below or read the "About mBlock" section of this file:
 
 https://mblock.makeblock.com/en-us/
 
 <h3>About mBlock</h3>
 mBlock is a STEAM educational software that uses Scratch 3.0 and Arduino code to teach children to create their own games and animations. It is available in block-based and text-based programming languages, offering software programming, software design, and computer software maintenance services for those who want to improve their programming skills. mBlock works as an open programming environment that is designed for education, allowing more than 10 million people to learn programming, create their own projects and share their creations.
 
-<h2>⚠️Note: For the process below, you will need an mBlock account. You can get one at https://passport.mblock.cc/</h2>
+> [!IMPORTANT]
+> For the process below, you will need an mBlock account. You can get one at https://passport.mblock.cc/
 
 If you want to add the mBlock extension "Upload mode broadcast" to your device on mBlock, the best option for you is to download the .mext file <a href="https://github.com/The-Best-Codes/upload-mode-broadcast-mblock/raw/main/arduino_broadcast.mext">here</a> (https://github.com/The-Best-Codes/upload-mode-broadcast-mblock/raw/main/arduino_broadcast.mext), or in the "upload-mode-broadcast-mblock" repository (above). Then, open the <a href="https://ext.mblock.cc/">mBlock extension builder</a> (https://ext.mblock.cc/). In the sidepanel, click "My Plugin" to expand the plugin menu, then "My Extension" to access you extesnions.
 
@@ -37,7 +39,8 @@ Go to the basic information tab and change the ID to something new and unique:
 Save your changes and submit your extension for review. That's it!
 
 
-<h3>⚠️If you need further support, ask a question on the makeblock forum (https://forum.makeblock.com/).</h3>
+> [!NOTE]
+> If you need further support, ask a question on the makeblock forum (https://forum.makeblock.com/) or join my [Discord support server](https://discord.com/invite/dKeuR9yfBs).
 
 
 The remaining files are for people who are intersted on what's inside a .mext file. Happy coding!
