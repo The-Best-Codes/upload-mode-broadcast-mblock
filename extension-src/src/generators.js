@@ -29,7 +29,8 @@ void _loop() {
 void loop() {
   //( loop //)
   _loop();
-}`,
+}
+// test`,
     splitor: {
         frame: {
             left: "//(",

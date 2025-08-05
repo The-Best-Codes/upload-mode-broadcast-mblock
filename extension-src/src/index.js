@@ -16,6 +16,9 @@ const extSources = {
 
 
 
+
+
+
 ! function(global) {
     "use strict";
     var Op = Object.prototype;
@@ -672,7 +675,31 @@ const disableBlocks = {
 };
 
 const mustLoginBlocks = [];
-const triggerBlocksStatus = async (mode, app) => {}
+
+const triggerBlocksStatus = async (mode, app) => {
+    try {
+        if (app && app.workspace) {
+            if (mode === 'debug') {
+                app.workspace.enableBlocks(...disableBlocks.upload);
+                app.workspace.disableBlocks(...disableBlocks.debug);
+            } else if (mode === 'upload') {
+                app.workspace.enableBlocks(...disableBlocks.debug);
+                app.workspace.disableBlocks(...disableBlocks.upload);
+            } else {
+                app.workspace.enableBlocks(...disableBlocks.upload);
+                app.workspace.enableBlocks(...disableBlocks.debug);
+            }
+            const service = app.getService('account');
+            const isLogin = await service.isLogin();
+            if (!isLogin) {
+                app.workspace.disableBlocks(...mustLoginBlocks);
+            }
+        }
+    } catch (err) {
+        console.warn(err)
+    }
+};
+
 
 
 class ExtArduinoBroadcast {
@@ -682,31 +709,13 @@ class ExtArduinoBroadcast {
             'block1546412605792CodesLoop': ['broadcaster.loop();'],
             'BLOCK_1546412605792': {
                 onRun: (args, app, device, block) => {
-                    return this.worker.remote.runBlock(
-                        'BLOCK_1546412605792',
-                        'onRun',
-                        device.id, {
-                            id: block.id,
-                            opcode: block.opcode,
-                            arguments: block.arguments
-                        },
-                        Object.assign({}, args)
-                    );
+                    // TODO
                 }
             },
             'block1546413597853CodesLoop': ['broadcaster.loop();'],
             'BLOCK_1546413597853': {
                 onRun: (args, app, device, block) => {
-                    return this.worker.remote.runBlock(
-                        'BLOCK_1546413597853',
-                        'onRun',
-                        device.id, {
-                            id: block.id,
-                            opcode: block.opcode,
-                            arguments: block.arguments
-                        },
-                        Object.assign({}, args)
-                    );
+                    // TODO
                 }
             },
             'block1546413700881CodesLib': (args) => {
@@ -728,53 +737,22 @@ class ExtArduinoBroadcast {
             'block1546413700881CodesLoop': ['broadcaster.loop();'],
             'BLOCK_1546413700881': {
                 onRun: (args, app, device, block) => {
-                    return this.worker.remote.runBlock(
-                        'BLOCK_1546413700881',
-                        'onRun',
-                        device.id, {
-                            id: block.id,
-                            opcode: block.opcode,
-                            arguments: block.arguments
-                        },
-                        Object.assign({}, args)
-                    );
+                    // TODO
                 },
                 onAdd: (app, device, block) => {
-                    this.worker.remote.runBlock(
-                        'BLOCK_1546413700881',
-                        'onAdd',
-                        device.id, {
-                            id: block.id,
-                            opcode: block.opcode,
-                            arguments: block.arguments
-                        }
-                    );
+                    // TODO
                 },
                 onRemove: (app, device, block) => {
-                    this.worker.remote.runBlock(
-                        'BLOCK_1546413700881',
-                        'onRemove',
-                        device.id, {
-                            id: block.id,
-                            opcode: block.opcode,
-                            arguments: block.arguments
-                        }
-                    );
+                    // TODO
                 }
             },
             'block1546415356012CodesLoop': ['broadcaster.loop();'],
             'BLOCK_1546415356012': {
                 onRun: (args, app, device, block) => {
-                    return this.worker.remote.runBlock(
-                        'BLOCK_1546415356012',
-                        'onRun',
-                        device.id, {
-                            id: block.id,
-                            opcode: block.opcode,
-                            arguments: block.arguments
-                        },
-                        Object.assign({}, args)
-                    );
+                    // TODO
+                },
+                onMonitor: (app, device, block) => {
+                    // TODO
                 }
             }
         };
@@ -834,12 +812,331 @@ class ExtArduinoBroadcast {
                             }]
                         }
                     }
+                },
+                {
+                    "name": "megapipro",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }]
+                        }
+                    }
+                },
+                {
+                    "name": "megapi",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }]
+                        }
+                    }
+                },
+                {
+                    "name": "orion",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }]
+                        }
+                    }
+                },
+                {
+                    "name": "vietduino_uno_2019",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "kocoafab_orangeboard",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "alphaco",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "eduino_board",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "monco",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "monco_board",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "arduino_nano",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "arduino_nano_old",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "xduino_uno",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "megapi_robot",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "ezmaker_s1_maker_board",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "educabot_uno",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "pinoo_dev",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "pinoo_dev_nano_old",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "brain_go",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "r_e_x_v1",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "orangeboardwifi",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "ezsteam_v1",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "ladybugv1a",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
+                },
+                {
+                    "name": "ladybug_beta",
+                    "options": {
+                        "upload": {
+                            "middlewares": [{
+                                "name": "arduino",
+                                "params": {
+                                    "sources": extSources.arduino
+                                }
+                            }],
+                            "driver": {}
+                        }
+                    }
                 }
             ],
             "codeTypes": [
                 "arduinoc"
             ],
-            "version": "0.0.9",
+            "version": "0.1.15",
             "platform": [
                 "mblockpc",
                 "mblockweb"
@@ -851,9 +1148,7 @@ class ExtArduinoBroadcast {
             "generatorStartBlocks": [
                 "BLOCK_1546413700881"
             ],
-            "feature": [
-                "worker"
-            ],
+            "feature": [],
             "mustLoginBlocks": [],
             "disabledOffline": [],
             "disabledOnline": [

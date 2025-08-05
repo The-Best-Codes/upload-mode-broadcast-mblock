@@ -1,7 +1,23 @@
 const ExtHandler = {
-
     // when extension is loaded
-    onLoad(app, target) {},
+    async onLoad(app, target) {
+        const account = app.getService('account');
+        if (account) {
+            const isLogin = await account.isLogin();
+            if (!isLogin) {
+                app.workspace.disableBlocks(...mustLoginBlocks);
+            }
+            account.onLogin(() => {
+                app.workspace.enableBlocks(...mustLoginBlocks);
+            });
+            account.onLogout(() => {
+                app.workspace.disableBlocks(...mustLoginBlocks);
+            });
+        }
+        if (target && typeof target.isUploadMode === 'function') {
+            triggerBlocksStatus(target.isUploadMode() ? 'upload' : 'debug', app);
+        }
+    },
 
     // when extension is unloaded
     onUnload(app) {
@@ -19,42 +35,40 @@ const ExtHandler = {
     },
 
     // when stop button is clicked
-    onStopAll(app, device) {
-        // TODO
-    },
+    onStopAll(app, device) {},
 
     // before switch to upload mode
-    beforeChangeUploadMode(app, device) {
-        // TODO
+    async beforeChangeUploadMode(app, device) {
         return true;
     },
 
     // before switch to debug mode
-    beforeChangeDebugMode(app, device) {
-        // TODO
+    async beforeChangeDebugMode(app, device) {
         return true;
     },
 
     // after switched to upload mode
     afterChangeUploadMode(app, device) {
-        // TODO
+        triggerBlocksStatus('upload', app, device);
         return true;
     },
 
     // after switched to debug mode
     afterChangeDebugMode(app, device) {
-        // TODO
+        triggerBlocksStatus('debug', app, device);
         return true;
     },
 
     // when device is selected
     onSelect(app, device) {
-        // TODO
+        setTimeout(() => {
+            triggerBlocksStatus(device.isUploadMode() ? 'upload' : 'debug', app, device);
+        }, 0);
     },
 
     // when device is unselected
     onUnselect(app, device) {
-        // TODO
+        triggerBlocksStatus('', app, device);
     },
 
     // before upload code
@@ -68,7 +82,15 @@ const ExtHandler = {
     },
 
     // when receiving and reading byte
-    onRead(app, device) {
+    onRead(app, device) {},
+
+    // do something before firmware update
+    beforeFirmwareUpdate(app, device) {
+        // TODO
+    },
+
+    // do something after firmware update
+    afterFirmwareUpdate(app, device) {
         // TODO
     }
 }
