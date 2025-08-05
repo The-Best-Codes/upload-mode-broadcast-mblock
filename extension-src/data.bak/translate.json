@@ -1,0 +1,211 @@
+[
+    {
+        "key": "arduino_broadcast",
+        "value": "Upload Mode Broadcast",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752634786,
+        "modify_time": 1752634786,
+        "uid": 1428526,
+        "id": "2712737"
+    },
+    {
+        "key": "extensionName",
+        "value": "Upload Mode Broadcast",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712738"
+    },
+    {
+        "key": "extensionDescription",
+        "value": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712739"
+    },
+    {
+        "key": "BLOCK_1546412605792",
+        "value": "send upload mode message [MESSAGE] ",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712740"
+    },
+    {
+        "key": "BLOCK_1546413597853",
+        "value": "send upload mode message [MESSAGE] with value [VALUE] ",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712741"
+    },
+    {
+        "key": "BLOCK_1546413700881",
+        "value": "when receiving upload mode message [MESSAGE] ",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712742"
+    },
+    {
+        "key": "BLOCK_1546415356012",
+        "value": "upload mode message value",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712743"
+    },
+    {
+        "key": "cate_d9ae47fa",
+        "value": "Upload Mode Broadcast",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712744"
+    },
+    {
+        "key": "extensionName",
+        "value": "Arduino Uno",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752634786,
+        "modify_time": 1752634786,
+        "uid": 1428526,
+        "id": "2712745"
+    },
+    {
+        "key": "extensionName",
+        "value": "Arduino Uno",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712746"
+    },
+    {
+        "key": "arduino_broadcast",
+        "value": "Upload Mode Broadcast",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752634786,
+        "modify_time": 1752634786,
+        "uid": 1428526,
+        "id": "2712747"
+    },
+    {
+        "key": "extensionName",
+        "value": "Upload Mode Broadcast",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712748"
+    },
+    {
+        "key": "extensionDescription",
+        "value": "By adding this extension, you enable a device to interact with a sprite in the Upload Mode.",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752634786,
+        "modify_time": 1752634786,
+        "uid": 1428526,
+        "id": "2712749"
+    },
+    {
+        "key": "BLOCK_1546412605792",
+        "value": "send upload mode message [MESSAGE] ",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712750"
+    },
+    {
+        "key": "BLOCK_1546413597853",
+        "value": "send upload mode message [MESSAGE] with value [VALUE] ",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752634786,
+        "modify_time": 1752634786,
+        "uid": 1428526,
+        "id": "2712751"
+    },
+    {
+        "key": "BLOCK_1546413700881",
+        "value": "when receiving upload mode message [MESSAGE] ",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712752"
+    },
+    {
+        "key": "BLOCK_1546415356012",
+        "value": "upload mode message value",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712753"
+    },
+    {
+        "key": "cate_d9ae47fa",
+        "value": "Upload Mode Broadcast",
+        "eid": "41674",
+        "lang": "en",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712754"
+    },
+    {
+        "eid": "41674",
+        "lang": "zh",
+        "key": "arduino_broadcast",
+        "value": "Upload Mode Broadcast",
+        "sort": 999,
+        "create_time": 1752662701,
+        "modify_time": 1752662701,
+        "uid": 1428526,
+        "id": "2712755"
+    }
+]

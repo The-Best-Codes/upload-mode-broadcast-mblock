@@ -1,0 +1,194 @@
+[
+    {
+        "eid": "41674",
+        "cid": "75893",
+        "name": "send upload mode message @[String](string) ",
+        "opcode": "BLOCK_1546412605792",
+        "blockType": "command",
+        "checkboxInFlyout": false,
+        "gap": 12,
+        "disableOnline": true,
+        "disableOffline": false,
+        "generatorCode": false,
+        "blockState": "incomplete",
+        "sort": 999,
+        "hidden": false,
+        "login": false,
+        "args": [
+            {
+                "type": "string",
+                "name": "MESSAGE",
+                "val": "message",
+                "checkNumber": false
+            }
+        ],
+        "handler": {
+            "onRun": "(args, app, device, block) => {\n  // TODO\n}"
+        },
+        "codes": {
+            "arduinoc": {
+                "include": [
+                    "\"src/OfflineBroadcast.h\""
+                ],
+                "lib": "",
+                "declare": "OfflineBroadcast broadcaster;",
+                "setup": "Serial.begin(115200);",
+                "code": "broadcaster.broadcast(String(/*{MESSAGE}*/));",
+                "_loop": "['broadcaster.loop();']",
+                "loop": ""
+            }
+        },
+        "create_time": 1752662701,
+        "modify_time": 1754408593,
+        "platform": [
+            "mblockpc",
+            "mblockweb"
+        ],
+        "uid": 1428526,
+        "id": "728475"
+    },
+    {
+        "eid": "41674",
+        "cid": "75893",
+        "name": "send upload mode message @[String](string) with value @[String](string)",
+        "opcode": "BLOCK_1546413597853",
+        "blockType": "command",
+        "checkboxInFlyout": false,
+        "gap": 36,
+        "disableOnline": true,
+        "disableOffline": false,
+        "generatorCode": false,
+        "blockState": "incomplete",
+        "sort": 999,
+        "hidden": false,
+        "login": false,
+        "args": [
+            {
+                "type": "string",
+                "name": "MESSAGE",
+                "val": "message",
+                "checkNumber": false
+            },
+            {
+                "type": "string",
+                "name": "VALUE",
+                "val": "1",
+                "checkNumber": true
+            }
+        ],
+        "handler": {
+            "onRun": "(args, app, device, block) => {\n  // TODO\n}"
+        },
+        "codes": {
+            "arduinoc": {
+                "include": [
+                    "\"src/OfflineBroadcast.h\""
+                ],
+                "lib": "",
+                "declare": "OfflineBroadcast broadcaster;",
+                "setup": "Serial.begin(115200);",
+                "code": "broadcaster.broadcast(String(/*{MESSAGE}*/),String(/*{VALUE}*/));",
+                "_loop": "['broadcaster.loop();']",
+                "loop": ""
+            }
+        },
+        "create_time": 1752662701,
+        "modify_time": 1754408606,
+        "platform": [
+            "mblockpc",
+            "mblockweb"
+        ],
+        "uid": 1428526,
+        "id": "728476"
+    },
+    {
+        "eid": "41674",
+        "cid": "75893",
+        "name": "when receiving upload mode message @[String](string) ",
+        "opcode": "BLOCK_1546413700881",
+        "blockType": "hat",
+        "checkboxInFlyout": false,
+        "gap": 12,
+        "disableOnline": true,
+        "disableOffline": false,
+        "generatorCode": true,
+        "blockState": "incomplete",
+        "sort": 999,
+        "hidden": false,
+        "login": false,
+        "args": [
+            {
+                "type": "string",
+                "name": "MESSAGE",
+                "val": "message",
+                "checkNumber": false
+            }
+        ],
+        "handler": {
+            "onRun": "(args, app, device, block) => {\n  // TODO\n}",
+            "onAdd": "(app, device, block) => {\n  // TODO\n}",
+            "onRemove": "(app, device, block) => {\n  // TODO\n}"
+        },
+        "codes": {
+            "arduinoc": {
+                "include": [
+                    "\"src/OfflineBroadcast.h\""
+                ],
+                "lib": "(args)=>{\r\n    if(currDevice.includes('mcore')){\r\n        return ['#include <MeMCore.h>'];\r\n    }else if(currDevice.includes('auriga')){\r\n        return ['#include <MeAuriga.h>'];\r\n    }else{\r\n        return ['#include <Arduino.h>'];\r\n    }\r\n    \r\n}",
+                "declare": "['OfflineBroadcast broadcaster;',\r\n`void broadcastHandler/*{$INDEX}*/(){\r\n  /*{$BRANCH}*/\r\n  broadcaster.callOK();\r\n}`]",
+                "setup": "Serial.begin(115200);",
+                "code": "broadcaster.on(String(/*{MESSAGE}*/),broadcastHandler/*{$INDEX}*/);",
+                "_loop": "['broadcaster.loop();']",
+                "loop": ""
+            }
+        },
+        "create_time": 1752662701,
+        "modify_time": 1754408617,
+        "platform": [
+            "mblockpc",
+            "mblockweb"
+        ],
+        "uid": 1428526,
+        "id": "728477"
+    },
+    {
+        "eid": "41674",
+        "cid": "75893",
+        "name": "upload mode message value",
+        "opcode": "BLOCK_1546415356012",
+        "blockType": "string",
+        "checkboxInFlyout": false,
+        "gap": 36,
+        "disableOnline": true,
+        "disableOffline": false,
+        "generatorCode": false,
+        "blockState": "incomplete",
+        "sort": 999,
+        "hidden": false,
+        "login": false,
+        "handler": {
+            "onRun": "(args, app, device, block) => {\n  // TODO\n}"
+        },
+        "codes": {
+            "arduinoc": {
+                "include": [
+                    "\"src/OfflineBroadcast.h\""
+                ],
+                "lib": "",
+                "declare": "OfflineBroadcast broadcaster;",
+                "setup": "Serial.begin(115200);",
+                "code": "broadcaster.broadcastValue",
+                "_loop": "['broadcaster.loop();']",
+                "loop": ""
+            }
+        },
+        "create_time": 1752634786,
+        "modify_time": 1752634786,
+        "platform": [
+            "mblockpc",
+            "mblockweb"
+        ],
+        "uid": 1428526,
+        "id": "728478"
+    }
+]
